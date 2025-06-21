@@ -23,11 +23,51 @@ const getContrastTextColor = (bgColor) => {
 const themes = [
 
 
-  { name: "Theme 1", value: "theme1", image: "https://res.cloudinary.com/dppiuypop/image/upload/v1744567220/uploads/pswepd3udghnonjfrtlr.jpg" }
+  { name: "Theme 1", value: "theme1", image: "https://res.cloudinary.com/dppiuypop/image/upload/v1744567220/uploads/pswepd3udghnonjfrtlr.jpg" },
+  { name: "Theme 2", value: "default", image: "https://res.cloudinary.com/dppiuypop/image/upload/v1744567248/uploads/ea6wlejnwiafahhedrnw.jpg" },
+  { name: "Theme 3", value: "theme3", image: "https://res.cloudinary.com/dppiuypop/image/upload/v1744567353/uploads/jhqemev3z0r8vpykio6y.jpg" },
 
+  { name: "Theme 5", value: "theme5", image: "https://res.cloudinary.com/dppiuypop/image/upload/v1744567417/uploads/phrtny0vrzzcslbzxre3.jpg" },
 
-   
+      { name: "Theme 8", value: "theme8", image: "https://res.cloudinary.com/dppiuypop/image/upload/v1744716430/uploads/un2yddnwzvcjeminjwra.jpg" },
+
+        { name: "Theme 9", value: "theme9", image: "https://res.cloudinary.com/dppiuypop/image/upload/v1744716452/uploads/dorltnmwfnutwjsub08g.jpg" },
+        { name: "Theme 10", value: "theme10", image: "https://res.cloudinary.com/dppiuypop/image/upload/v1744716478/uploads/q0yjbnxojw9horxsc9yc.jpg" },
+
+  // Light & Soft Tones    
+  { name: "Ivory White", value: "ivory", color: "#F8F9FA" },    
+  { name: "Cloud Gray", value: "cloud-gray", color: "#EAEAEA" },    
+  { name: "Champagne Beige", value: "champagne", color: "#F7E7CE" },    
+  { name: "Sky Mist", value: "sky-mist", color: "#E3F2FD" },    
+  { name: "Lavender Haze", value: "lavender", color: "#E6E6FA" },    
+  { name: "Powder Blue", value: "powder-blue", color: "#B0E0E6" },    
+  { name: "Pearl White", value: "pearl-white", color: "#FAFAFA" },    
+  { name: "Mint Cream", value: "mint-cream", color: "#F5FFFA" },    
+  { name: "Pale Rose", value: "pale-rose", color: "#FFE4E1" },    
+  { name: "Vanilla Yellow", value: "vanilla", color: "#FFF8DC" },    
+  { name: "Baby Blue", value: "baby-blue", color: "#ADD8E6" },    
+  { name: "Silk Peach", value: "silk-peach", color: "#FFDAB9" },    
+  { name: "Ash Gray", value: "ash-gray", color: "#B2BEB5" },    
+  { name: "Light Cyan", value: "light-cyan", color: "#E0FFFF" },    
+  { name: "Snow White", value: "snow-white", color: "#FFFAFA" },    
+
+  // Medium & Elegant Tones    
+  { name: "Steel Blue", value: "steel-blue", color: "#4682B4" },    
+  { name: "Teal Green", value: "teal-green", color: "#008080" },    
+  { name: "Slate Gray", value: "slate-gray", color: "#708090" },    
+  { name: "Sapphire Blue", value: "sapphire-blue", color: "#0F52BA" },    
+  { name: "Emerald Green", value: "emerald-green", color: "#50C878" },    
+  { name: "Charcoal Black", value: "charcoal-black", color: "#333333" },    
+  { name: "Oxford Blue", value: "oxford-blue", color: "#002147" },    
+  { name: "Deep Maroon", value: "deep-maroon", color: "#800000" },    
+  { name: "Copper Brown", value: "copper-brown", color: "#B87333" },    
+  { name: "Platinum Gray", value: "platinum-gray", color: "#E5E4E2" },    
+  { name: "Royal Indigo", value: "royal-indigo", color: "#4B0082" },    
+  { name: "Burnt Orange", value: "burnt-orange", color: "#CC5500" },    
+  { name: "Graphite Gray", value: "graphite-gray", color: "#474A51" },    
+  { name: "Warm Taupe", value: "warm-taupe", color: "#D2B48C" },    
 ];
+
 
 const PPT = () => {
   const templateRef = useRef(null); // Add this line
