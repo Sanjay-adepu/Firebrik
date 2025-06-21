@@ -1,0 +1,230 @@
+/* === Fonts === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* === Global Resets === */
+body {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  color: #333333;
+  line-height: 1.6;
+}
+
+/* === Layout Container === */
+.home-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+/* === Popup Overlay === */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-box {
+  background-color: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  text-align: left;
+}
+
+.popup-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.popup-text {
+  font-size: 1rem;
+  color: #555;
+}
+
+.popup-link {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.popup-link:hover {
+  text-decoration: underline;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #222;
+}
+
+/* === Hero Section === */
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+  background-color: #fff;
+  border-radius: 16px;
+}
+
+.hero-heading {
+  font-size: 1.2rem !important;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 1rem;
+}
+
+.hero-subtext {
+  font-size: 0.6rem !important;
+  color: #555;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  line-height: 1.8;
+}
+
+/* === Primary Button === */
+.btn-primary {
+  display: inline-block;
+  background-color: #f4f4f4;
+  color: #2c2c2c;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  
+}
+
+.btn-primary:hover {
+  
+  transform: scale(1.05);
+  
+}
+
+/* === Features Section === */
+.features {
+  text-align: center;
+  padding: 80px 20px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+}
+
+.section-heading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.why-list {
+  list-style: none;
+  padding: 0;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.feature-item {
+  font-size: 0.7rem;
+  padding: 14px 0;
+  color: #444;
+  border-bottom: 1px solid #ddd;
+}
+
+/* === Why Choose Section === */
+.why-choose {
+  text-align: center;
+  padding: 80px 20px;
+margin-top:30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.why-description {
+  font-size: 0.8rem;
+  color: #444;
+  max-width: 800px;
+  margin: 0 auto 30px;
+  line-height: 1.8;
+}
+
+.why-list li {
+  font-size: 0.78rem;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* === CTA Section === */
+.cta-section {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.cta-heading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+.cta-subtext {
+  font-size: 0.6rem;
+  color: #555;
+  margin-bottom: 24px;
+}
+
+/* === Blog Text Formatting === */
+.blog-article p {
+  font-size: 0.9rem;
+  text-align: justify;
+  line-height: 1.6;
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+  .hero-heading {
+    font-size: 1.5rem;
+  }
+
+  .hero-subtext {
+    font-size: 0.9rem;
+    text-align: justify;
+  }
+
+  .section-heading {
+    font-size: 1.3rem;
+  }
+
+  .cta-heading {
+    font-size: 1.3rem;
+  }
+
+  .cta-subtext {
+    font-size: 0.9rem;
+  }
+}
+
+/* === Hide Carousel (not used currently) === */
+.carousel-wrapper,
+.carousel-image {
+  display: none;
+}

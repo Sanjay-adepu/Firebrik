@@ -1,0 +1,175 @@
+/* Root Variables for Light & Dark Mode */
+:root {
+    --primary-color: #313131;
+    --primary-hover: #4b4b4b;
+    --bg-light: #ffffff;
+    --bg-dark: #121212;
+    --text-light: #333;
+    --text-dark: #f5f5f5;
+    --border-light: #ddd;
+    --border-dark: #444;
+    --input-bg-light: #f9f9f9;
+    --input-bg-dark: #222;
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-dark: rgba(255, 255, 255, 0.1);
+}
+
+/* Contact Section - Centered & Responsive */
+.contact-section {
+    max-width: 800px;
+    width: 90%;
+    margin:200px auto;
+    padding: 30px;
+    background: var(--bg-light);
+    box-shadow: 0 6px 15px var(--shadow-light);
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Dark Mode Support */
+body.dark-mode .contact-section {
+    background: var(--bg-dark);
+    box-shadow: 0 6px 15px var(--shadow-dark);
+}
+
+/* Contact Title */
+.contact-title {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Dark Mode Title */
+body.dark-mode .contact-title {
+    color: var(--text-dark);
+}
+
+/* Success Message */
+.message-success {
+    color: #28a745;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Form Styling */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Input Fields */
+.contact-input,
+.contact-textarea {
+    width: 100%;
+    max-width: 450px;
+    padding: 14px;
+    font-size: 16px;
+    border: 2px solid var(--border-light);
+    border-radius: 8px;
+    background: var(--input-bg-light);
+    color: var(--text-light);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Dark Mode Input Fields */
+body.dark-mode .contact-input,
+body.dark-mode .contact-textarea {
+    background: var(--input-bg-dark);
+    color: var(--text-dark);
+    border: 2px solid var(--border-dark);
+}
+
+/* Input Focus */
+.contact-input:focus,
+.contact-textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Textarea */
+.contact-textarea {
+    resize: none;
+    height: 130px;
+}
+
+/* Button Styling */
+.contact-btn {
+    width: 100%;
+    max-width: 450px;
+    padding: 14px;
+    font-size: 17px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+/* Dark Mode Button */
+body.dark-mode .contact-btn {
+    background: var(--primary-hover);
+}
+
+/* Button Hover & Active */
+.contact-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+.contact-btn:active {
+    transform: scale(0.98);
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .contact-section {
+        width: 80%;
+        margin-top:120px;
+        padding: 24px ;
+
+    }
+
+    .contact-title {
+        font-size: 22px;
+    }
+
+    .contact-input,
+    .contact-textarea,
+    .contact-btn {
+        max-width: 100%;
+    }
+}
+/* Spinner inside the button */
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

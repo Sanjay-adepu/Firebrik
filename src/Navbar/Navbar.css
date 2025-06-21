@@ -1,0 +1,189 @@
+/* Navbar Container */
+.navbar {
+  background-color: white;
+  padding: 20px 30px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for professionalism */
+  transition: background-color 0.3s ease-in-out; /* Smooth transition on scroll */
+}
+
+/* Navbar Container (Flexbox Layout) */
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1300px;
+  margin: 0 auto;
+  height: 60px; /* Added for uniform height */
+}
+
+/* Logo Styling */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.navbar-logo:hover {
+  color: #157cf6; /* Subtle hover effect for the logo */
+}
+
+.logo-img {
+  width: 45px;
+  height: 45px;
+  margin-right: 12px;
+  border-radius: 50%;
+  border: 1px solid #1e9bfccd;
+  transition: transform 0.3s ease-in-out; /* Hover effect */
+}
+
+.logo-img:hover {
+  transform: scale(1.1);
+}
+
+/* Desktop Navigation Links */
+.nav-links-desktop {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin-left: auto; /* Push links to the right */
+}
+
+.nav-links-desktop li {
+  padding: 10px;
+}
+
+.nav-links-desktop a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links-desktop a:hover {
+  color: #157cf6;
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Sidebar Navigation (Mobile Only) */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -100%; /* Initially hidden */
+  width: 75%;
+  height: 100vh;
+  background-color: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  padding-top: 60px;
+}
+
+.sidebar.open {
+  left: 0; /* Slide in from the left */
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li {
+  padding: 20px 30px;
+  border-bottom: 1px solid #ddd;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: #f0f0f0;
+}
+
+/* Hamburger Menu (Mobile) */
+.hamburger-menu {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 100;
+}
+
+.bar {
+  width: 30px;
+  height: 3px;
+  background-color: #6d6d6d;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Hamburger Animation for Mobile */
+.hamburger-menu.open .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger-menu.open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.open .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Show Hamburger on Mobile */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 36px;
+    height: 22px;
+  }
+
+  .nav-links-desktop {
+    display: none; /* Hide desktop nav links */
+  }
+
+  .sidebar {
+    display: flex;
+  }
+}
+
+/* Responsive Desktop Nav */
+@media (max-width: 1280px) {
+  .navbar-container {
+    padding: 15px 20px; /* Adjust padding for smaller screens */
+  }
+
+  .nav-links-desktop {
+    gap: 15px; /* Reduce space between desktop links */
+  }
+}
+
+/* Smooth Scrolling for Anchor Links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Navbar Background Transition on Scroll */
+.navbar.scrolled {
+  background-color: #f8f8f8; /* Slight background change on scroll */
+}
