@@ -130,7 +130,7 @@ const PPT = () => {
 
   const loadPreviousPPT = async (ppt) => {
     try {
-      const response = await axios.get(`https://falcon-ai-backend.vercel.app/get-slides/${ppt.topic}`);
+      const response = await axios.get(`https://falcon-ai-backend.vercel.app/get-slides/${ppt.topic}`); 
       if (response.data?.success) {
         setSlides(response.data.slides || []);
         setSelectedPPT(ppt.topic);
