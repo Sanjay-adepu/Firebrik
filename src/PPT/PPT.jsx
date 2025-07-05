@@ -224,6 +224,192 @@ const PPT = () => {
   return (
     <>
       <Navbar />
+<div className="dashboard-container">                   <h2>AI Powered PPT Maker</h2>    
+<p className="subtext">Generate professional presentations instantly!</p>           <div className="previous-ppts">                  
+                    <FaHistory size={30} title="Previous PPTs" />                  
+                    <select onChange={(e) => loadPreviousPPT(JSON.parse(e.target.value))}>                  
+                        <option value="">Select Previous PPT</option>                  
+                        {previousPPTs.map((ppt, index) => (                  
+                            <option key={index} value={JSON.stringify(ppt)}>                  
+                                {ppt.topic}                  
+                            </option>                  
+                        ))}                  
+                    </select>                  
+                </div>        <div className="input-section">                    
+      <input                    
+        type="text"                    
+        placeholder="Enter topic..."                    
+        value={topic}                    
+        onChange={(e) => setTopic(e.target.value)}                    
+      />                    
+      <input                    
+        type="text"                    
+        placeholder="Slide count"                    
+        value={slideCount}                    
+        min={1}                    
+        max={20}                    
+        onChange={(e) => setSlideCount(Number(e.target.value))}                    
+      />                    
+      <button onClick={generateSlides} disabled={loading}>                    
+        {loading ? <span className="loading-spinner"></span> : "Generate Slides"}                    
+      </button>         <div style={{ margin: "1rem 0", backgroundColor: "#fff8e1", padding: "1rem", borderRadius: "8px", color: "#8d6e63", fontSize: "0.7rem" }}>  <strong>Note:</strong> In some cases, the generated images may not be related to the topic. You can remove them or use your own custom images. Don’t worry about the slide arrangement — the content will auto-align.
+
+</div>  </div>          {error && <p className="error-message">{error}</p>}              {/* Horizontal Theme Selector */}  {/* Horizontal Theme Selector */}    <p ref={templateRef}>Templates</p>
+
+<div className="theme-selector">    
+  <div className="theme-selector__list">    
+    {themes.map((theme) => {    
+      const isSelected = selectedTheme === theme.value;    
+      const backgroundStyle = theme.image    
+        ? {    
+            backgroundImage: `url(${theme.image})`,    
+            backgroundSize: "cover",    
+            backgroundPosition: "center",    
+          }    
+        : {    
+            backgroundColor: theme.color,    
+            color: getContrastTextColor(theme.color),    
+          };  return (    <button    
+  key={theme.value}    
+  className={`theme-selector__button ${isSelected ? "theme-selector__button--active" : ""}`}    
+  style={{    
+    ...backgroundStyle,    
+    color: theme.image ? "white" : backgroundStyle.color,    
+    border: isSelected ? "2px solid #333" : "1px solid #ccc",    
+  }}    
+  onClick={() => setSelectedTheme(theme.value)}    
+/>
+
+);
+})}
+
+  </div>    
+</div>    
+<div className="settings-panel">    
+  <div className="setting-group">    
+    <label htmlFor="titleColor" className="setting-label">Title Color</label>    
+    <input    
+      id="titleColor"    
+      type="color"    
+      value={titleColor}    
+      onChange={(e) => setTitleColor(e.target.value)}    
+      className="color-input"    
+    />    
+  </div>    <div className="setting-group">    
+    <label htmlFor="contentColor" className="setting-label">Content Color</label>    
+    <input    
+      id="contentColor"    
+      type="color"    
+      value={contentColor}    
+      onChange={(e) => setContentColor(e.target.value)}    
+      className="color-input"    
+    />    
+  </div>    <div className="setting-group toggle-group">    
+    <label htmlFor="imageToggle" className="setting-label">Include Images</label>    
+    <div className="toggle-wrapper">    
+      <input    
+        type="checkbox"    
+        id="imageToggle"    
+        checked={useImages}    
+        onChange={() => setUseImages((prev) => !prev)}    
+        className="toggle-checkbox"    
+      />    
+      <label htmlFor="imageToggle" className="toggle-slider"></label>    
+    </div>  </div>  </div>        {slides.length > 0 && (                    
+  <>                    
+    <h2>📝 Your Presentation:</h2>      
+    <div style={{ margin: "1rem 0", backgroundColor: "#fff8e1", padding: "1rem", borderRadius: "8px", color: "#2d190ee0", fontSize: "0.6rem" }}>     
+    You can easily edit slide content, including titles, text, and colors. If you don't want an image in a slide, you can remove it — it won't appear in the final PPT.    
+    </div>  <div className="slide-grid">    {slides.map((slide, slideIndex) => {  const theme = themes.find((t) => t.value === selectedTheme);
+const bgColor = theme?.color;
+const bgImage = theme?.image;
+const textColor = getContrastTextColor(bgColor || "#fff");  return (
+
+   <div              
+  key={slideIndex}              
+  className="slide-box"              
+  style={{              
+    backgroundColor: bgImage ? undefined : bgColor || "#fff",              
+    backgroundImage: bgImage ? `url(${bgImage})` : undefined,              
+    backgroundSize: "cover",              
+    backgroundPosition: "center",              
+    color: textColor,              
+  }}              
+>              
+      <div className="slide-content-container">                  
+        <h3                  
+          contentEditable                  
+          suppressContentEditableWarning                  
+          onBlur={(e) => {                  
+            const updatedSlides = [...slides];                  
+            updatedSlides[slideIndex].title = e.target.innerText;                  
+            setSlides(updatedSlides);                  
+          }}                  
+          style={{ color: titleColor || textColor }}                  
+        >                  
+          {slide.title}                  
+        </h3>         <div  contentEditable
+suppressContentEditableWarning
+onBlur={(e) => {
+const updatedSlides = [...slides];
+
+// Clean the innerText properly
+const rawText = e.target.innerText.trim();
+const lines = rawText
+.split("\n")
+.map((line) => line.replace(/^🔹\s*/, "").trim())
+.filter((line) => line.length > 0);
+
+// Extra safety: ignore if last line is a duplicate of second last
+if (lines.length >= 2) {
+const last = lines[lines.length - 1];
+const secondLast = lines[lines.length - 2];
+if (last === secondLast) {
+lines.pop(); // Remove the duplicate line
+}
+}
+
+updatedSlides[slideIndex].content = lines;
+setSlides(updatedSlides);
+}}
+className="slide-content-block"
+
+> 
+
+{slide.content
+.filter((point) => point.trim() !== "") // Remove empty points
+.map((point, index) => (
+
+<div key={index} className="bullet-line">  
+{point}  
+</div>  
+))}  </div>    </div>            {/* Conditionally Show Image Section */}      
+{useImages && (  <div className="image-container">                  
+  {slide.image && slide.image.trim() !== "" ? ( // Ensure empty strings don't count                  
+    <div className="image-wrapper">                  
+      <img src={slide.image} alt="Slide" className="slide-image" />                  
+      <button className="remove-image-btn" onClick={() => removeSlideImage(slideIndex)}>                  
+        ❌                  
+      </button>                  
+    </div>                  
+  ) : (                  
+   <label className="upload-image-label">                  
+  ➕  add image                  
+  <input                  
+    type="file"                  
+    accept="image/*"                  
+    onChange={(e) => handleImageUpload(e, slideIndex)}                  
+    className="hidden-file-input"                  
+  />                  
+</label>                  
+  )}                  
+</div>                  
+      )}                  
+    </div>                  
+  );                  
+})}                  
+    </div>                    
+      
 
       {/* your UI here (input, slides etc.) */}
 
