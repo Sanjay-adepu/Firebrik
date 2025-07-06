@@ -184,7 +184,10 @@ const PPT = () => {
       const formattedSlides = response.data.slides.map((slide) => ({
   title: slide.title.replace(/[^a-zA-Z0-9 ]/g, "").trim(),
   content: slide.content.map((point) =>
-    point.replace(/^[-•]\s*/, "").replace(/[`/]/g, "").trim()
+    point
+      .replace(/^[-•*]\s*/, "")  // remove bullet characters at start
+      .replace(/[*`\/\\]/g, "")  // remove unwanted symbols: *, `, /, \
+      .trim()
   ),
   image: null,
 }));
