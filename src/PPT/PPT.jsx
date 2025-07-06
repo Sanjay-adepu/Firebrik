@@ -170,6 +170,10 @@ const PPT = () => {
       setError("⚠️ Please enter a valid topic.");
       return;
     }
+if (slideCount > 15) {
+  setError("❌ Maximum 15 slides allowed.");
+  return;
+}
 
     setError("");
     setLoading(true);
@@ -270,14 +274,17 @@ const PPT = () => {
         value={topic}                    
         onChange={(e) => setTopic(e.target.value)}                    
       />                    
-      <input                    
-        type="text"                    
-        placeholder="Slide count"                    
-        value={slideCount}                    
-        min={1}                    
-        max={20}                    
-        onChange={(e) => setSlideCount(Number(e.target.value))}                    
-      />                    
+      <input
+  type="number"
+  placeholder="Slide count"
+  value={slideCount}
+  min={1}
+  max={15}  // Enforce max limit
+  onChange={(e) => {
+    const value = Math.min(Number(e.target.value), 15); // Limit to 15
+    setSlideCount(value);
+  }}
+/>
       <button onClick={generateSlides} disabled={loading}>                    
         {loading ? <span className="loading-spinner"></span> : "Generate Slides"}                    
       </button>         <div style={{ margin: "1rem 0", backgroundColor: "#fff8e1", padding: "1rem", borderRadius: "8px", color: "#8d6e63", fontSize: "0.7rem" }}>  <strong>Note:</strong> In some cases, the generated images may not be related to the topic. You can remove them or use your own custom images. Don’t worry about the slide arrangement — the content will auto-align.
