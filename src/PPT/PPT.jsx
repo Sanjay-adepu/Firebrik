@@ -182,12 +182,12 @@ const PPT = () => {
       });
 
       const formattedSlides = response.data.slides.map((slide) => ({
-        title: slide.title.replace(//g, "").trim(),
-        content: slide.content.map((point) =>
-          point.replace(/^[-•]\s*/, "").replace(/[`/]/g, "").trim()
-        ),
-        image: null,
-      }));
+  title: slide.title.replace(/[^a-zA-Z0-9 ]/g, "").trim(),
+  content: slide.content.map((point) =>
+    point.replace(/^[-•]\s*/, "").replace(/[`/]/g, "").trim()
+  ),
+  image: null,
+}));
 
       if (formattedSlides.length > 0) {
         formattedSlides[0] = {
