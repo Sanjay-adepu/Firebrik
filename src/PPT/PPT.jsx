@@ -332,18 +332,7 @@ const PPT = () => {
       onChange={(e) => setContentColor(e.target.value)}    
       className="color-input"    
     />    
-  </div>    <div className="setting-group toggle-group">    
-    <label htmlFor="imageToggle" className="setting-label">Include Images</label>    
-    <div className="toggle-wrapper">    
-      <input    
-        type="checkbox"    
-        id="imageToggle"    
-        checked={useImages}    
-        onChange={() => setUseImages((prev) => !prev)}    
-        className="toggle-checkbox"    
-      />    
-      <label htmlFor="imageToggle" className="toggle-slider"></label>    
-    </div>  </div>  </div>        {slides.length > 0 && (                    
+  </div> </div>        {slides.length > 0 && (                    
   <>                    
     <h2>📝 Your Presentation:</h2>      
     <div style={{ margin: "1rem 0", backgroundColor: "#fff8e1", padding: "1rem", borderRadius: "8px", color: "#2d190ee0", fontSize: "0.6rem" }}>     
