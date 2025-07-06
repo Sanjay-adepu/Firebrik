@@ -199,11 +199,12 @@ image: null,
 }));
 
 if (formattedSlides.length > 0) {
-formattedSlides[0] = {
-title: 📌 Topic: ${topic},
-content: ["Presented by : Enter Your Name "],
-image: null,
-};
+  formattedSlides[0] = {
+    title: `📌 Topic: ${topic}`,
+    content: ["Presented by : Enter Your Name "],
+    image: null,
+  };
+}
 }
 
 setSlides(formattedSlides);
