@@ -86,7 +86,7 @@ const Home = () => {
             <li><strong>🔹 Theme Selection & Font Customization:</strong> Choose from various themes, title colors, and fonts.</li>
             <li><strong>🔹 AI-Powered Slide Generation:</strong> Convert raw text into well-structured, visually appealing PowerPoint slides instantly.</li>
             <li><strong>🔹 Instant PDF & PPTX Downloads:</strong> Save your presentations in multiple formats for easy sharing.</li>
-            <li><strong>🔹 Customization Options:</strong> Modify text, images, fonts, and colors to match your preferences.</li>
+            <li><strong>🔹 Customization Options:</strong> Modify text, fonts, and colors to match your preferences.</li>
           </ul>
         </section>
 
