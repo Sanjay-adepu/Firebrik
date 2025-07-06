@@ -80,9 +80,9 @@ const Home = () => {
           <h2 className="section-heading">Powerful Features for Effortless Productivity</h2>
           <ul className="why-list">
             <li><strong>🔹 Lightning-Fast AI Response:</strong> Get real-time AI assistance in <strong>less than 12 seconds</strong>.</li>
-            <li><strong>🔹 Unlimited Slides:</strong> Create as many slides as you need without restrictions.</li>
+          
             <li><strong>🔹 No Watermarks:</strong> Download clean, professional slides without branding overlays.</li>
-            <li><strong>🔹 Image Customization:</strong> Add, remove, or replace images based on your needs.</li>
+        
             <li><strong>🔹 Theme Selection & Font Customization:</strong> Choose from various themes, title colors, and fonts.</li>
             <li><strong>🔹 AI-Powered Slide Generation:</strong> Convert raw text into well-structured, visually appealing PowerPoint slides instantly.</li>
             <li><strong>🔹 Instant PDF & PPTX Downloads:</strong> Save your presentations in multiple formats for easy sharing.</li>
