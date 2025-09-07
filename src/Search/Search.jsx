@@ -1,7 +1,7 @@
 // VoiceCall.jsx
 import React, { useRef, useState } from "react";
 
-const API_BASE = ""; // e.g. "http://localhost:5000" or "" if same origin
+const API_BASE = "https://studymate-backend-beta.vercel.app"; // e.g. "http://localhost:5000" or "" if same origin
 
 export default function VoiceCall() {
   const pcRef = useRef(null);
