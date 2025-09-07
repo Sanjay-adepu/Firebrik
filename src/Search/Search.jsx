@@ -1,226 +1,136 @@
-import React, { useState, useEffect, useRef } from "react";
-import ReactMarkdown from "react-markdown";
-import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import "./Search.css";
-import Navbar from "../Navbar/Navbar.jsx";
-import { IoSend, IoChatbubblesOutline } from "react-icons/io5";
-import { ImSpinner2 } from "react-icons/im";
-import { v4 as uuidv4 } from "uuid";
+// VoiceCall.jsx
+import React, { useRef, useState } from "react";
 
-const CodeBlock = ({ className, children, ...props }) => {
-  const language = className ? className.replace("language-", "") : "";
-  const code = String(children).trim();
-  const [copied, setCopied] = useState(false);
+const API_BASE = ""; // e.g. "http://localhost:5000" or "" if same origin
 
-  const handleCopy = async () => {
+export default function VoiceCall() {
+  const pcRef = useRef(null);
+  const localStreamRef = useRef(null);
+  const remoteAudioRef = useRef(null);
+  const dcRef = useRef(null);
+  const [connected, setConnected] = useState(false);
+  const [muted, setMuted] = useState(false);
+
+  async function startCall() {
     try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    }
-  };
+      // 1) get mic
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      localStreamRef.current = stream;
 
-  return (
-    <div className="code-wrapper">
-      <SyntaxHighlighter language={language} style={atomOneDark} PreTag="div" {...props}>
-        {code}
-      </SyntaxHighlighter>
-      <button className="copy-btn" onClick={handleCopy}>
-        {copied ? "Copied" : "Copy"}
-      </button>
-    </div>
-  );
-};
+      // 2) create RTCPeerConnection
+      const pc = new RTCPeerConnection({
+        iceServers: [
+          { urls: "stun:stun.l.google.com:19302" }
+          // If you face connectivity issues, add TURN servers here.
+        ],
+      });
+      pcRef.current = pc;
 
-const Search = () => {
-  const messagesEndRef = useRef(null);
-  const [query, setQuery] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [selectedMessage, setSelectedMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [sessionId, setSessionId] = useState(localStorage.getItem("sessionId") || uuidv4());
-  const [showChatHistory, setShowChatHistory] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
+      // play remote audio
+      pc.ontrack = (evt) => {
+        // evt.streams[0] should be the remote audio stream
+        if (remoteAudioRef.current) {
+          remoteAudioRef.current.srcObject = evt.streams[0];
+        }
+      };
 
-  useEffect(() => {
-    localStorage.setItem("sessionId", sessionId);
-  }, [sessionId]);
+      // optional: receive text events on datachannel
+      pc.ondatachannel = (evt) => {
+        const ch = evt.channel;
+        ch.onmessage = (m) => {
+          try {
+            const parsed = JSON.parse(m.data);
+            // handle messages (e.g., model events)
+            console.log("Model event:", parsed);
+          } catch (e) {
+            console.log("Data channel raw:", m.data);
+          }
+        };
+      };
 
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-    }
-  }, [messages]);
+      // create an outgoing data channel to receive events (optional)
+      const outCh = pc.createDataChannel("oai-events");
+      outCh.onopen = () => console.log("datachannel open");
+      outCh.onmessage = (e) => console.log("datachannel message:", e.data);
+      dcRef.current = outCh;
 
-  const toggleChatHistory = () => {
-    if (!showChatHistory) {
-      const storedMessages = localStorage.getItem("chatHistory");
-      if (storedMessages) {
-        setMessages(JSON.parse(storedMessages));
-      }
-    }
-    setShowChatHistory(!showChatHistory);
-  };
+      // 3) add local tracks
+      stream.getTracks().forEach((t) => pc.addTrack(t, stream));
 
-  const handleMessageClick = (index) => {
-    if (selectedMessage === index) {
-      setSelectedMessage(null);
-    } else {
-      setSelectedMessage(index);
-    }
-  };
+      // 4) create offer
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
 
-  const handleEdit = (index) => {
-    setQuery(messages[index].text);
-    setEditIndex(index);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".chat-message")) {
-        setSelectedMessage(null);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-
-    let updatedMessages = [...messages];
-
-    if (editIndex !== null) {
-      updatedMessages.splice(editIndex, 2);
-      updatedMessages.splice(editIndex, 0, { sender: "user", text: query });
-      setEditIndex(null);
-    } else {
-      updatedMessages.push({ sender: "user", text: query });
-    }
-
-    setMessages(updatedMessages);
-    setQuery("");
-    document.getElementById("chat-input").style.height = "auto"; // Reset textarea height
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch("https://falcon-ai-backend.vercel.app/ai-search", {
+      // 5) POST offer.sdp to your backend; backend returns answer SDP
+      const resp = await fetch(`${API_BASE}/api/gemini-live/offer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, sessionId }),
+        body: JSON.stringify({ sdp: offer.sdp }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        updatedMessages.push({ sender: "ai", text: data.response });
-        setMessages(updatedMessages);
-        localStorage.setItem("chatHistory", JSON.stringify(updatedMessages));
-      } else {
-        setError(data.error || "An error occurred");
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new Error("SDP exchange failed: " + txt);
       }
-    } catch (err) {
-      setError("An error occurred while fetching data");
-    }
 
-    setLoading(false);
-  };
+      const json = await resp.json();
+      const answerSdp = json.answer;
+      if (!answerSdp) throw new Error("No answer from server");
+
+      // 6) set remote description
+      await pc.setRemoteDescription({ type: "answer", sdp: answerSdp });
+
+      setConnected(true);
+    } catch (err) {
+      console.error("startCall error:", err);
+      alert("Call failed: " + (err.message || err));
+      cleanup();
+    }
+  }
+
+  function toggleMute() {
+    if (!localStreamRef.current) return;
+    localStreamRef.current.getAudioTracks().forEach((t) => (t.enabled = !t.enabled));
+    setMuted((m) => !m);
+  }
+
+  function cleanup() {
+    try {
+      pcRef.current?.close();
+    } catch {}
+    pcRef.current = null;
+    if (localStreamRef.current) {
+      localStreamRef.current.getTracks().forEach((t) => t.stop());
+      localStreamRef.current = null;
+    }
+    if (remoteAudioRef.current) {
+      remoteAudioRef.current.srcObject = null;
+    }
+    setConnected(false);
+  }
 
   return (
-    <>
-      <Navbar />
-      <div className="chat-container">
-        <div className="chat-history-icon" onClick={toggleChatHistory}>
-          <IoChatbubblesOutline size={28} />
+    <div style={{ padding: 16 }}>
+      <h3>AI Phone Call (Gemini Live)</h3>
+      {!connected ? (
+        <button onClick={startCall} style={{ marginRight: 8 }}>
+          Start Call
+        </button>
+      ) : (
+        <button onClick={cleanup} style={{ marginRight: 8 }}>
+          End Call
+        </button>
+      )}
+      <button onClick={toggleMute} disabled={!connected}>
+        {muted ? "Unmute" : "Mute"}
+      </button>
+
+      <div style={{ marginTop: 12 }}>
+        <div>
+          <strong>Remote:</strong>
         </div>
-
-        <div className="chat-window">
-          {messages.length === 0 && !loading && !error && (
-            <div className="default-message">
-              <p>👋 Hello! How can I assist you today?</p>
-            </div>
-          )}
-
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`chat-message ${msg.sender}-message`}
-              ref={index === messages.length - 1 ? messagesEndRef : null}
-              onClick={() => msg.sender === "user" && handleMessageClick(index)}
-            >
-              <div className="copy-container">
-                {msg.sender === "ai" ? (
-                  <div className="ai-message">
-                    <ReactMarkdown
-                      children={msg.text}
-                      components={{
-                        code({ inline, className, children, ...props }) {
-                          return !inline ? (
-                            <CodeBlock className={className} {...props}>{children}</CodeBlock>
-                          ) : (
-                            <code className="inline-code">{children}</code>
-                          );
-                        },
-                      }}
-                    />
-                    <button className="copy-btn" onClick={() => navigator.clipboard.writeText(msg.text)}>
-                      📋 Copy
-                    </button>
-                  </div>
-                ) : (
-                  <div className="chat-text">{msg.text}</div>
-                )}
-                {msg.sender === "user" && selectedMessage === index && (
-                  <div className="message-options">
-                    <button onClick={() => navigator.clipboard.writeText(msg.text)}>📋 Copy</button>
-                    <button onClick={() => handleEdit(index)}>✏️ Edit Message</button>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-
-          {loading && (
-            <div className="loading-animation">
-              <div className="loading-dot"></div>
-              <div className="loading-dot"></div>
-              <div className="loading-dot"></div>
-            </div>
-          )}
-          {error && <p className="error-text">{error}</p>}
-        </div>
-
-        <form className="chat-input-container" onSubmit={handleSubmit}>
-          <textarea
-            id="chat-input"
-            className="message-box"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              e.target.style.height = "auto"; // Reset height
-              e.target.style.height = `${e.target.scrollHeight}px`; // Adjust dynamically
-            }}
-            placeholder="Send a message..."
-            disabled={loading}
-            rows={1}
-          />
-          <button id="send-button" className="submit-btn" type="submit" disabled={loading}>
-            {loading ? <ImSpinner2 className="animate-spin text-xl" /> : <IoSend className="text-xl" />}
-          </button>
-        </form>
+        <audio ref={remoteAudioRef} autoPlay controls style={{ width: "100%" }} />
       </div>
-    </>
+    </div>
   );
-};
-
-export default Search;
+}
